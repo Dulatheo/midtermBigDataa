@@ -18,7 +18,7 @@ d.execute_script("window.scrollTo(0, 500)");
 time.sleep(3)
 
 element = WebDriverWait(d,10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="main-top-news"]/div[@class="jspContainer"]/div[@class="jspPane"]/div[@class="single-item"]')))
-
+k=1
 try:
 	print "found"
 
@@ -31,24 +31,20 @@ for a in link:
     print(a.get_attribute('href'))
     links.append(a.get_attribute('href'))
 
+wb = Workbook()
+sheet1 = wb.add_sheet('sheet1')
 
 for i in range(0,len(links)):	
 	d.get(links[i])
 	d.execute_script("window.scrollTo(0, 700)");
 	time.sleep(5)
-
-	user = d.find_elements_by_xpath('//*[@id="comments_list"]/div[@class="comment"]/div[@class="comment-area"]/div[@class="comment-area-header"]/div[@class="comment-user"]')
 	comment = d.find_elements_by_xpath('//*[@id="comments_list"]/div[@class="comment"]')
-	#comment = d.find_elements_by_xpath('//*[@id="comments_list"]/div[@class="comment"]')
-
-	users=[]
 	comments=[]
-	for a in user:
-		users.append(a.text)
-	for i in range(0,len(users)):
-		print users[i]
-
 	for a in comment:
 		comments.append(a.text)
 	for i in range(0,len(comments)):
 		print comments[i]
+	
+		sheet1.write(k,0,comments[i])
+		k = k + 1
+		wb.save('midterm.xls')
